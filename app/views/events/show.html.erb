@@ -1,0 +1,65 @@
+<div class="event-details">
+  <%= render @event %>
+</div>
+
+<div class="event-actions">
+  <%= link_to "Edit this event", edit_event_path(@event) %> |
+  <%= link_to "Back to events", events_path %>
+
+  <%= button_to "Destroy this event", @event, method: :delete, form: {class: "inline-form"} %>
+</div>
+
+<style>
+  body {
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .event-details {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+
+  .event-actions {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .event-actions a, .event-actions form input[type=submit] {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+    display: inline-block;
+    background-color: #007bff;
+    cursor: pointer;
+  }
+
+  .event-actions a:hover, .event-actions form input[type=submit]:hover {
+    background-color: #0056b3;
+  }
+
+  .event-actions form input[type=submit] {
+    background-color: #dc3545;
+  }
+
+  .event-actions form input[type=submit]:hover {
+    background-color: #c82333;
+  }
+</style>

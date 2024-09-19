@@ -1,0 +1,82 @@
+<%= link_to 'Back', root_path, class: 'new-event-link' %>
+
+<h1>Events</h1>
+
+<div id="events">
+  <% @events.each do |event| %>
+    <div class="event">
+      <%= render event %>
+      <p>
+        <%= link_to "Show this event", event, class: 'event-link' %>
+      </p>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "New event", new_event_path, class: 'new-event-link' %>
+
+<style>
+  body {
+    background-color: #f8f8f8;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #4a4a4a;
+    margin: 0;
+    padding: 20px;
+  }
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+
+  a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 40px;
+  }
+
+  #events {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .event {
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+  }
+
+  .event:last-child {
+    border-bottom: none;
+  }
+
+  .event p {
+    margin: 10px 0;
+  }
+
+  .event-link, .new-event-link {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 20px;
+  }
+
+  .new-event-link {
+    background-color: #28a745;
+  }
+
+  .event-link:hover, .new-event-link:hover {
+    opacity: 0.8;
+  }
+</style>

@@ -1,0 +1,120 @@
+<%= form_with(model: meeting, local: true, class: "meeting-form") do |form| %>
+  <% if meeting.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">Errors</h4>
+      <ul>
+        <% meeting.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name, class: "form-label" %>
+    <br>
+    <%= form.text_field :name, class: "form-control", placeholder: "Enter meeting name" %>
+  </div>
+  <br>
+
+  <div class="form-group">
+    <%= form.label :date, class: "form-label" %>
+    <br>
+    <%= form.date_field :date, class: "form-control", placeholder: "Select meeting date" %>
+  </div>
+  <br>
+
+  <div class="form-group">
+    <%= form.label :time, class: "form-label" %>
+    <br>
+    <%= form.time_field :time, class: "form-control", placeholder: "Select meeting time" %>
+  </div>
+  <br>
+
+  <div class="form-group">
+    <%= form.label :location, class: "form-label" %>
+    <br>
+    <%= form.text_field :location, class: "form-control", placeholder: "Enter meeting location" %>
+  </div>
+  <br>
+
+  <div class="form-group">
+    <%= form.label :description, class: "form-label" %>
+    <br>
+    <%= form.text_area :description, class: "form-control", placeholder: "Enter meeting description" %>
+  </div>
+  <br>
+
+  <div class="text-center mt-4">
+    <%= form.submit "Save Meeting", class: "btn btn-primary btn-lg mr-3" %>
+  </div>
+<% end %>
+
+<style>
+  .meeting-form {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .form-control {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #495057;
+  }
+
+  .form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  .alert {
+    padding: 20px;
+    background-color: #f8d7da;
+    color: #721c24;
+    margin-bottom: 20px;
+    border-radius: 4px;
+  }
+
+  .alert-heading {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+  }
+
+  .btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+</style>

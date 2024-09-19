@@ -1,0 +1,21 @@
+<!-- app/views/links/_link.html.erb -->
+
+<div id="<%= dom_id link %>">
+  <style>
+    .custom-link {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 20px; /* Adjust the font size as needed */
+      background-color: white;
+      color: #333; /* Text color */
+      border-radius: 20px; /* Adjust the border radius as needed */
+      text-decoration: none; /* Remove underline */
+    }
+
+    .custom-link:hover {
+      background-color: #f0f0f0; /* Background color on hover */
+    }
+  </style>
+
+  <%= link_to link.title, link.url, target: "_blank", class: "custom-link" %>
+</div>

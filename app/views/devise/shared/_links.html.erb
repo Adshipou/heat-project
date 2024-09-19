@@ -1,0 +1,20 @@
+<%- if controller_name != 'sessions' %>
+  <%= link_to new_session_path(resource_name), class: "login-button" do %>
+    Log in with Email
+  <% end %><br />
+<% end %>
+
+<% if devise_mapping.omniauthable? %>
+  <% resource_class.omniauth_providers.each do |provider| %>
+    <%= form_for "Login",
+      url: omniauth_authorize_path(resource_name, provider), 
+      method: :post,
+      data: {turbo: "false"} do |f| %>
+        <%= button_tag(type: "submit", class: "google-sign-in") do %>
+  <%= image_tag("pic.png", alt: "", class: "google-sign-in-image") %>
+<% end %>
+
+    <% end %>
+  <% end %>
+  <p style="margin-top: 20px;">Google login is required to access the site.</p>
+<% end %>

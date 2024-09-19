@@ -1,0 +1,147 @@
+<p class="notice"><%= notice %></p>
+
+<div class="member-details">
+  <%= render @member %>
+</div>
+
+<div class="action-links">
+  <%= link_to "Edit this member", edit_member_path(@member) %> |
+  <%= link_to "Back to members", members_path %>
+  <%= button_to "Destroy this member", @member, method: :delete, data: { confirm: "Are you sure?" }, form_class: "action-link", class: "danger-link" %>
+</div>
+
+<div class="meetings-attended">
+  <h3>Meetings Attended</h3>
+  <% if @member.meetings.any? %>
+    <ul>
+      <% @member.meetings.each do |meeting| %>
+        <li><%= meeting.name %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>This member has not attended any meetings yet.</p>
+  <% end %>
+</div>
+
+<div class="events-attended">
+  <h3>Events Attended</h3>
+  <% if @member.events.any? %>
+    <ul>
+      <% @member.events.each do |event| %>
+        <li><%= event.event_name %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>This member has not attended any events yet.</p>
+  <% end %>
+</div>
+
+<style>
+  body {
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .notice {
+    color: #28a745;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .member-details {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+
+  .action-links {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .action-links a, .action-links form {
+    display: inline-block;
+    margin: 5px;
+    text-decoration: none;
+    color: #007bff;
+    background-color: transparent;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #007bff;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .action-links a:hover, .action-links form:hover {
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+  }
+
+  .action-links form button {
+    border: none;
+    background: none;
+    color: inherit;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
+
+  .action-links form {
+    display: inline;
+  }
+
+  .meetings-attended {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+
+  .meetings-attended h3 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .meetings-attended ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .meetings-attended li {
+    margin-bottom: 5px;
+  }
+
+  .events-attended {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.events-attended h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.events-attended ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.events-attended li {
+  margin-bottom: 5px;
+}
+
+
+</style>

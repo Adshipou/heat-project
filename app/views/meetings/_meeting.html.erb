@@ -1,0 +1,55 @@
+<div id="<%= dom_id meeting %>">
+  <p>
+    <strong>Name:</strong>
+    <%= meeting.name %>
+    <span style="margin-left: 10px; margin-right: 10px;">|</span>
+    <strong>Date:</strong>
+    <%= meeting.date %>
+    <span style="margin-left: 10px; margin-right: 10px;">|</span>
+    <strong>Time:</strong>
+    <%= meeting.time %>
+    <span style="margin-left: 10px; margin-right: 10px;">|</span>
+    <strong>Location:</strong>
+    <%= meeting.location %>
+  </p>
+  <p>
+    <strong>Description:</strong>
+    <%= meeting.description %>
+  </p>
+</div>
+
+<style>
+  #<%= dom_id meeting %> {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  #<%= dom_id meeting %>:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  #<%= dom_id meeting %> strong {
+    color: #333;
+    font-weight: 600;
+    margin-right: 5px;
+  }
+
+  #<%= dom_id meeting %> p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  #<%= dom_id meeting %> p:last-child {
+    margin-bottom: 0;
+  }
+
+  #<%= dom_id meeting %> span {
+    color: #999;
+  }
+</style>

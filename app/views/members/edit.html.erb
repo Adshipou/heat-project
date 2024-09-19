@@ -1,0 +1,56 @@
+<div class="form-container">
+  <h1>Editing member</h1>
+
+  <%= render "form", member: @member %>
+</div>
+
+<div class="link-container">
+  <%= link_to "Show this member", @member %> |
+  <%= link_to "Back to members", members_path %>
+</div>
+
+<style>
+  body {
+    background-color: #f7f7f7;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h1 {
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .link-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+
+  a:hover {
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+  }
+
+  .form-container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: auto;
+  }
+</style>

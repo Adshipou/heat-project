@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event_link: MyString
+  event_name: MyString
+  event_datetime: 2024-02-29 19:50:24
+
+two:
+  event_link: MyString
+  event_name: MyString
+  event_datetime: 2024-02-29 19:50:24

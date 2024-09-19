@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Member View</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      background-color: #f7f7f7;
+    }
+
+    h1 {
+      font-size: 30px;
+      color: #5D6470;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border: none;
+      text-align: left;
+    }
+
+    thead {
+      background-color: #eaeaea;
+    }
+
+    th {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    tbody tr {
+      transition: background-color 0.3s ease;
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: #ffffff;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f4f4f4;
+    }
+
+    tbody tr:hover {
+      background-color: #dddfe2;
+    }
+
+    td {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <h1>Member View</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Location</th>
+        <th>Description</th>
+        <!-- Add more columns if needed -->
+      </tr>
+    </thead>
+    <tbody>
+    <% @meetings = @meetings.sort_by(&:date).reverse %>
+      <% @meetings.each do |meeting| %>
+        <tr>
+          <td><%= meeting.name %></td>
+          <td><%= meeting.date %></td>
+          <td><%= meeting.time.strftime("%I:%M %p") if meeting.time.present? %></td>
+          <td><%= meeting.location %></td>
+          <td><%= meeting.description %></td>
+          <!-- Add more columns if needed -->
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</body>
+</html>

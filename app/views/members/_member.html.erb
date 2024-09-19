@@ -1,0 +1,57 @@
+<div id="<%= dom_id member %>">
+  <p>
+    <strong>Member name:</strong>
+    <%= member.member_name %>
+  </p>
+
+  <p>
+    <strong>Member points:</strong>
+    <%= member.member_points %>
+  </p>
+
+  <p>
+    <strong>Executive status:</strong>
+    <span class="<%= 'executive-status-' + member.executive_status.to_s %>">
+      <%= member.executive_status ? 'Yes' : 'No' %>
+    </span>
+  </p>
+</div>
+
+<style>
+  body {
+    background-color: #f0f2f5;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+  }
+
+  #<%= dom_id member %> {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    max-width: 500px;
+    margin: 20px auto;
+  }
+
+  #<%= dom_id member %> p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+
+  #<%= dom_id member %> strong {
+    color: #333;
+    font-weight: 600;
+    margin-right: 5px;
+  }
+
+  .executive-status-true {
+    color: #28a745;
+  }
+
+  .executive-status-false {
+    color: #dc3545;
+  }
+</style>

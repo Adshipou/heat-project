@@ -1,0 +1,73 @@
+<%= link_to 'Back', root_path, class: "button back-button" %>
+
+<h1 class="page-title">Meetings</h1>
+
+<div id="meetings" class="meetings-container">
+  <% @meetings.each do |meeting| %>
+    <div class="meeting-item">
+      <%= render meeting %>
+      <p class="show-meeting-link">
+        <%= link_to "Show this meeting", meeting, class: "button show-button" %>
+      </p>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "New meeting", new_meeting_path, class: "button new-meeting-button" %>
+<br><br>
+<%= link_to member_view_meetings_path, class: "button button-member-view" do %>
+  Member View
+<% end %>
+
+<style>
+  .button, .back-button, .show-button, .new-meeting-button, .button-member-view {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: 
+    color: 
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .back-button {
+    background-color: #ff7f7f;
+  }
+
+  .button-member-view {
+    background-color: #ADD8E6;
+  }
+
+  .new-meeting-button {
+    background-color: #90EE90;
+  }
+
+  .button:hover, .back-button:hover, .show-button:hover, .new-meeting-button:hover, .button-member-view:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+
+  .page-title {
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .meetings-container {
+    margin-top: 20px;
+  }
+
+  .meeting-item {
+    background-color: #fff; 
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .show-meeting-link {
+    margin-top: 10px;
+  }
+</style>

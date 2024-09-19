@@ -1,0 +1,113 @@
+<div class="form-container">
+  <%= form_with(model: member, local: true) do |form| %>
+    <% if member.errors.any? %>
+      <div>
+        <h2><%= pluralize(member.errors.count, "error") %> prohibited this member from being saved:</h2>
+        <ul>
+          <% member.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-field">
+      <%= form.label :member_name, class: 'form-label' %>
+      <%= form.text_field :member_name, class: 'form-control' %>
+    </div>
+
+    <div class="form-field">
+      <%= form.label :member_points, class: 'form-label' %>
+      <%= form.number_field :member_points, class: 'form-control' %>
+    </div>
+
+    <div class="form-field">
+      <%= form.label :executive_status, class: 'form-label' %>
+      <%= form.check_box :executive_status, class: 'form-control' %>
+    </div>
+
+    <div class="form-field">
+      <%= form.submit 'Save Member', class: 'form-submit' %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  body {
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .form-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    max-width: 600px;
+    margin: 40px auto;
+  }
+
+  h2 {
+    color: #d9534f;
+    margin-bottom: 15px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    color: #d9534f;
+  }
+
+  li {
+    background-color: #f2dede;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #495057;
+  }
+
+  .form-control {
+    display: block;
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+
+  .form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  .form-submit {
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .form-submit:hover {
+    background-color: #0056b3;
+  }
+</style>

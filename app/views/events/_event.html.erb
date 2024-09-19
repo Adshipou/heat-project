@@ -1,0 +1,73 @@
+<div id="<%= dom_id event %>">
+  <p>
+    <strong>Event Link:</strong>
+    <%= link_to event.event_link, event.event_link %>
+  </p>
+
+  <p>
+    <strong>Event Name:</strong>
+    <%= event.event_name %>
+  </p>
+
+  <p>
+    <strong>Event Description:</strong>
+    <%= event.event_description %>
+  </p>
+
+  <p>
+    <strong>Event Deadline:</strong>
+    <%= event.event_end.strftime("%A, %d %B %Y at %I:%M %p") %>
+  </p>
+
+  <p>
+    <strong>Event Start:</strong>
+    <%= event.event_datetime.strftime("%A, %d %B %Y at %I:%M %p") %>
+  </p>
+
+  <p>
+    <strong>Event Points:</strong>
+    <%= event.event_points %>
+  </p>
+</div>
+
+<style>
+  body {
+    background-color: #f2f2f2;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+
+  #<%= dom_id event %> {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 600px;
+    margin: 30px auto;
+  }
+
+  #<%= dom_id event %> p {
+    color: #333;
+    line-height: 1.6;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  #<%= dom_id event %> strong {
+    display: inline-block;
+    min-width: 150px;
+    color: #555;
+    font-weight: bold;
+  }
+
+  #<%= dom_id event %> a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  #<%= dom_id event %> a:hover {
+    text-decoration: underline;
+  }
+
+</style>

@@ -1,0 +1,87 @@
+<%= link_to 'Back', root_path, class: 'back-link' %>
+
+<p class="notice"><%= notice %></p>
+
+<h1>Members</h1>
+
+<div id="members">
+  <% @members.each do |member| %>
+    <div class="member-item">
+      <%= render member %>
+      <div class="member-action">
+        <%= link_to "Show this member", member %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "New member", new_member_path, class: 'new-member-link' %>
+
+<style>
+  body {
+    background-color: #f7f7f7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+
+  a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+
+  .notice {
+    color: #28a745;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  #members {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+  }
+
+  .member-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .member-item:last-child {
+    border-bottom: none;
+  }
+
+  .member-action {
+    margin-top: 10px;
+  }
+
+  .new-member-link, .back-link {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .new-member-link:hover, .back-link:hover {
+    background-color: #0056b3;
+  }
+
+</style>
