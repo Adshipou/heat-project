@@ -37,5 +37,5 @@
 
 #all the config file
 config/environments/*
-config/initializers/*
+config/initializers/google_cloud.rb
 text-to-speech-416204-0906868973ed.json
