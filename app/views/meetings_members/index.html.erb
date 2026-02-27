@@ -1,45 +1,10 @@
 <%= link_to 'Back', root_path %>
 
-<h1>Meetings Attendance</h1>
+<h1><%= admin_view_mode? ? "Meetings Attendance" : "Meeting Check-In" %></h1>
 
-<style>
-  /* Table Styles */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-  }
-  th, td {
-    padding: 8px;
-    border: 1px solid black;
-  }
-  th {
-    background-color: #f2f2f2;
-    text-align: left;
-  }
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  tr:hover {
-    background-color: #ddd;
-  }
-
-  /* Form Styles */
-  .form-group {
-    margin-bottom: 10px;
-  }
-  .btn-primary {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-  }
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-</style>
-
+<% if member_view_mode? && @current_member.blank? %>
+  <p style="color: #b00020;">No member profile is linked to your account yet. Ask an admin to create one with your full name.</p>
+<% end %>
 
 <table>
   <thead>
@@ -47,7 +12,7 @@
       <th>Date</th>
       <th>Meeting</th>
       <th>Members</th>
-      <th>Add Member</th>
+      <th><%= admin_view_mode? ? "Add Member" : "Check In" %></th>
     </tr>
   </thead>
   <tbody>
@@ -65,10 +30,24 @@
           <% end %>
         </td>
         <td>
-          <%= form_with(model: MeetingsMember.new, url: meetings_members_path, method: :post) do |form| %>
-            <%= form.hidden_field :meeting_id, value: meeting.id %>
-            <%= form.collection_select :member_id, Member.all, :id, :member_name, prompt: "Select Member" %>
-            <%= form.submit "Add", class: "btn btn-primary" %>
+          <% if admin_view_mode? %>
+            <%= form_with(model: MeetingsMember.new, url: meetings_members_path, method: :post) do |form| %>
+              <%= form.hidden_field :meeting_id, value: meeting.id %>
+              <%= form.collection_select :member_id, @members, :id, :member_name, prompt: "Select Member" %>
+              <%= form.submit "Add", class: "btn btn-primary" %>
+            <% end %>
+          <% elsif @current_member.present? %>
+            <% already_checked_in = meeting.meetings_members.exists?(member_id: @current_member.id) %>
+            <% if already_checked_in %>
+              Checked in
+            <% else %>
+              <%= form_with(model: MeetingsMember.new, url: meetings_members_path, method: :post) do |form| %>
+                <%= form.hidden_field :meeting_id, value: meeting.id %>
+                <%= form.submit "Check In", class: "btn btn-primary" %>
+              <% end %>
+            <% end %>
+          <% else %>
+            Unavailable
           <% end %>
         </td>
       </tr>
@@ -77,18 +56,21 @@
 </table>
 
 <div>
-  <%= link_to "Back to Members", members_path %><br><br>
+  <% if admin_view_mode? %>
+    <%= link_to "Back to Members", members_path %><br><br>
+  <% end %>
   <%= link_to "Back to Meetings", meetings_path %>
 </div>
 
-<div><br><br>
-  <%= link_to 'Export to Excel', meetings_export_path, class: 'btn btn-primary' %>
-</div>
+<% if admin_view_mode? %>
+  <div><br><br>
+    <%= link_to 'Export to Excel', meetings_export_path, class: 'btn btn-primary' %>
+  </div>
 
-
-<h2>Remove Member from Meeting</h2>
-<%= form_with(url: remove_member_from_meeting_meetings_member_meetings_members_path, method: :delete) do |form| %>
-  <%= form.collection_select :meeting_id, @meetings, :id, :name, prompt: "Select Meeting" %>
-  <%= form.collection_select :member_id, @members, :id, :member_name, prompt: "Select Member" %>
-  <%= form.submit "Remove Member", class: "btn btn-danger" %>
+  <h2>Remove Member from Meeting</h2>
+  <%= form_with(url: remove_member_from_meeting_meetings_member_meetings_members_path, method: :delete) do |form| %>
+    <%= form.collection_select :meeting_id, @meetings, :id, :name, prompt: "Select Meeting" %>
+    <%= form.collection_select :member_id, @members, :id, :member_name, prompt: "Select Member" %>
+    <%= form.submit "Remove Member", class: "btn btn-danger" %>
+  <% end %>
 <% end %>

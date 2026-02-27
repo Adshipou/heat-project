@@ -2,8 +2,13 @@
 
 <%= render @link %>
 
-<div>
-  <%= link_to "Edit this link", edit_link_path(@link) %> |
-  <%= link_to "Back to links", links_path %>
-  <%= button_to "Destroy this link", @link, method: :delete %>
+<div class="action-links">
+  <% if admin_view_mode? %>
+    <%= link_to "Edit this link", edit_link_path(@link), class: "event-link" %>
+  <% end %>
+  <%= link_to "Back to links", links_path, class: "back-link" %>
+  <% if admin_view_mode? %>
+    <%= button_to "Destroy this link", @link, method: :delete, class: "btn btn-danger" %>
+  <% end %>
 </div>
+

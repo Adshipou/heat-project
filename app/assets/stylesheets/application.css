@@ -13,3 +13,477 @@
  *= require_tree .
  *= require_self
  */
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap");
+
+:root {
+  --bg: #f7f3ea;
+  --surface: #fffdf9;
+  --ink: #2b2520;
+  --muted: #74685e;
+  --brand: #7a1f2a;
+  --brand-strong: #5d1320;
+  --line: #e5d8c8;
+  --soft: #f3ebe0;
+  --success: #1f8f5f;
+  --danger: #b73e3e;
+  --shadow: 0 12px 26px rgba(44, 29, 18, 0.08);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: radial-gradient(circle at 0% 0%, #fffdf8 0%, var(--bg) 58%);
+  color: var(--ink);
+  font-family: "Source Sans 3", "Segoe UI", Tahoma, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 14px;
+  font-family: "Space Grotesk", "Segoe UI", Tahoma, sans-serif;
+  letter-spacing: 0.02em;
+  color: var(--brand-strong);
+}
+
+a {
+  color: var(--brand);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--brand-strong);
+  text-decoration: underline;
+}
+
+.flash {
+  max-width: 1100px;
+  margin: 0 auto 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.flash__alert {
+  color: var(--danger);
+}
+
+.flash__notice {
+  color: var(--brand);
+}
+
+.flash__success {
+  color: var(--success);
+}
+
+.navbar {
+  background: linear-gradient(100deg, var(--brand-strong), var(--brand)) !important;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  margin: 0 auto 18px;
+}
+
+.navbar .container {
+  max-width: 1180px;
+}
+
+.navbar-brand,
+.nav-link {
+  color: #fff !important;
+}
+
+.navbar-brand {
+  font-family: "Space Grotesk", "Segoe UI", Tahoma, sans-serif;
+  font-weight: 700;
+}
+
+.nav-link {
+  opacity: 0.92;
+  font-weight: 600;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.nav-link:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.navbar .button_to {
+  display: inline-block;
+  margin: 0;
+}
+
+.navbar .button_to + .button_to {
+  margin-left: 8px;
+}
+
+.btn,
+button,
+input[type="submit"] {
+  border-radius: 999px !important;
+}
+
+.btn-primary {
+  background: var(--brand) !important;
+  border-color: var(--brand) !important;
+  color: #fff !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  padding: 8px 14px !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.btn-primary:hover {
+  background: var(--brand-strong) !important;
+  border-color: var(--brand-strong) !important;
+  color: #fff !important;
+}
+
+.btn-danger {
+  background: var(--danger) !important;
+  border-color: var(--danger) !important;
+  color: #fff !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  padding: 8px 14px !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.btn-danger:hover {
+  background: #942d2d !important;
+  border-color: #942d2d !important;
+  color: #fff !important;
+}
+
+.btn-success {
+  color: #fff !important;
+  background: transparent !important;
+  border-color: #fff !important;
+}
+
+.btn-success:hover {
+  background: rgba(255, 255, 255, 0.16) !important;
+}
+
+#events,
+#meetings,
+#members,
+#links,
+.meeting-container,
+.event-details,
+.member-details,
+.meetings-attended,
+.events-attended,
+#about-organization,
+.container.mt-4 {
+  max-width: 980px;
+  margin: 0 auto 18px;
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.event,
+.meeting-item,
+.member-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.event:last-child,
+.meeting-item:last-child,
+.member-item:last-child {
+  border-bottom: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+th,
+td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+th {
+  background: var(--soft);
+  color: #5b4f46;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.78rem;
+}
+
+tr:nth-child(even) {
+  background: #fffcf6;
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+.event-actions,
+.meeting-actions,
+.action-links,
+.member-action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.event-actions,
+.meeting-actions,
+.action-links {
+  max-width: 980px;
+  margin: 0 auto 18px;
+}
+
+.member-action {
+  margin-top: 14px;
+}
+
+.event-actions .button_to,
+.meeting-actions .button_to,
+.action-links .button_to,
+.event-actions .inline-form,
+.meeting-actions .inline-form,
+.action-links .inline-form {
+  display: inline-flex;
+  margin: 0;
+}
+
+.event-actions .button_to input,
+.meeting-actions .button_to input,
+.action-links .button_to input {
+  margin: 0;
+}
+
+.record-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.record-card p {
+  margin: 0 0 10px;
+}
+
+.record-card p:last-child {
+  margin-bottom: 0;
+}
+
+.record-sep {
+  margin: 0 8px;
+  color: #9a8b80;
+}
+
+.executive-status-true {
+  color: var(--success);
+  font-weight: 700;
+}
+
+.executive-status-false {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.event-link,
+.new-event-link,
+.button,
+.new-member-link,
+.back-link,
+.custom-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--brand);
+  color: #fff !important;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  text-decoration: none !important;
+}
+
+.event-link:hover,
+.new-event-link:hover,
+.button:hover,
+.new-member-link:hover,
+.back-link:hover,
+.custom-link:hover {
+  background: var(--brand-strong);
+}
+
+.new-event-link,
+.new-member-link,
+.new-meeting-button {
+  background: #1f8f5f !important;
+}
+
+.back-button,
+.back-link {
+  background: #6b5b4f !important;
+}
+
+.danger-link,
+.delete-button {
+  background: var(--danger) !important;
+}
+
+ul {
+  margin: 8px 0;
+}
+
+.notice {
+  color: var(--success);
+}
+
+.check-in-code-card {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  background: #fff8ee;
+}
+
+.check-in-code-title {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.check-in-code-value {
+  margin: 0;
+  font-family: "Space Grotesk", "Segoe UI", Tahoma, sans-serif;
+  font-size: 1.45rem;
+  letter-spacing: 0.16em;
+  color: var(--brand-strong);
+}
+
+.check-in-code-expiry {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.check-in-help {
+  margin: 6px 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.check-in-done {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid #a9d7bf;
+  background: #e9f7ef;
+  color: #1e7e57;
+  font-weight: 600;
+}
+
+input[name="events_member[check_in_code]"] {
+  width: 120px;
+  letter-spacing: 0.12em;
+  text-align: center;
+  font-weight: 700;
+}
+
+.attendance-page-title {
+  max-width: 980px;
+  margin: 12px auto 8px;
+}
+
+.attendance-layout {
+  max-width: 980px;
+  margin: 0 auto 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.member-points-card {
+  max-width: 980px;
+  margin: 0 auto 20px;
+  padding: 20px 22px;
+  background: linear-gradient(120deg, #fff8ef 0%, #fffefb 100%);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.member-points-card h3 {
+  margin-bottom: 4px;
+}
+
+.member-points-value {
+  margin: 0;
+  font-family: "Space Grotesk", "Segoe UI", Tahoma, sans-serif;
+  color: var(--brand-strong);
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+
+  .container,
+  #events,
+  #meetings,
+  #members,
+  #links,
+  .meeting-container,
+  .event-details,
+  .member-details,
+  .meetings-attended,
+  .events-attended,
+  #about-organization,
+  .container.mt-4 {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  th,
+  td {
+    padding: 9px 8px;
+    font-size: 0.92rem;
+  }
+
+  .member-points-card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .member-points-value {
+    font-size: 1.6rem;
+  }
+}

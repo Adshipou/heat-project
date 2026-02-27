@@ -9,6 +9,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # end
 
   def google_oauth2
+    unless auth.present?
+      redirect_to new_user_session_path, alert: "Google login is not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET, then restart the server."
+      return
+    end
+
     user = User.from_omniauth(auth)
 
     if user.present?
@@ -16,8 +21,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       flash[:success] = t 'devise.omniauth_callbacks.success', kind: 'Google'
       sign_in_and_redirect user, event: :authentication
     else
+      user_email = auth&.info&.email || "Unknown account"
       flash[:alert] =
-        t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized."
+        t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{user_email} is not authorized."
       redirect_to new_user_session_path
     end
   end

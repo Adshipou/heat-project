@@ -10,10 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_15_232313) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
+ActiveRecord::Schema[7.0].define(version: 2026_02_27_000200) do
   create_table "events", force: :cascade do |t|
     t.string "event_link"
     t.string "event_name"
@@ -26,8 +23,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_232313) do
   end
 
   create_table "events_members", force: :cascade do |t|
-    t.bigint "event_id", null: false
-    t.bigint "member_id", null: false
+    t.integer "event_id", null: false
+    t.integer "member_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_events_members_on_event_id"
@@ -52,8 +49,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_232313) do
   end
 
   create_table "meetings_members", force: :cascade do |t|
-    t.bigint "meeting_id", null: false
-    t.bigint "member_id", null: false
+    t.integer "meeting_id", null: false
+    t.integer "member_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["meeting_id"], name: "index_meetings_members_on_meeting_id"
@@ -80,8 +77,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_232313) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "admin", default: false, null: false
+    t.boolean "super_admin", default: false, null: false
+    t.index ["admin"], name: "index_users_on_admin"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["super_admin"], name: "index_users_on_super_admin"
   end
 
   add_foreign_key "events_members", "events"

@@ -1,24 +1,16 @@
 class MembersController < ApplicationController
   before_action :set_member, only: %i[ show edit update destroy ]
-  before_action :require_login, except: [:check_member_attendance]
+  before_action :require_login
+  before_action :require_admin!, except: [:check_member_attendance]
 
   def check_member_attendance
-    def check_member_attendance
-      if current_user.present?
-        @member = Member.find_by(member_name: current_user.full_name)
-        @attended = if @member.present? && (@member.meetings.any? || @member.events.any?)
-          true
-                    else
-          false
-                    end
-      else
-        @attended = false
-      end
-    end
-  end
+    @member = current_user&.linked_member
+    @attended = @member.present? && (@member.meetings.exists? || @member.events.exists?)
 
-  def set_member
-    @member = current_user.member
+    respond_to do |format|
+      format.html
+      format.json { render json: { attended: @attended } }
+    end
   end
 
   # GET /members or /members.json
@@ -27,7 +19,7 @@ class MembersController < ApplicationController
   end
 
   def require_login
-    redirect_to login2_path unless session[:authenticated]
+    redirect_to(login2_path) unless session[:authenticated]
   end
 
   # GET /members/1 or /members/1.json
@@ -87,13 +79,16 @@ class MembersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_member
-      @member = Member.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_member
+    @member = Member.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def member_params
-      params.require(:member).permit(:member_name, :member_points, :executive_status)
-    end
+  # Only a super admin can set executive status.
+  def member_params
+    permitted = [:member_name, :member_points]
+    permitted << :executive_status if super_admin_user?
+
+    params.require(:member).permit(permitted)
+  end
 end

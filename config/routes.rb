@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'meetings_members/index'
   resources :members
   root 'pages#home'
+  post 'view_mode/:mode', to: 'view_modes#update', as: :switch_view_mode
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks',
     sessions: 'users/sessions',
@@ -29,6 +30,7 @@ Rails.application.routes.draw do
   resources :events_members, only: [:index, :create]
 
   resources :events_members do
+    get 'check_in_code', on: :collection
     delete 'remove_member_from_event', on: :collection
   end
 

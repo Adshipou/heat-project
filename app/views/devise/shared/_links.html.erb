@@ -4,17 +4,16 @@
   <% end %><br />
 <% end %>
 
-<% if devise_mapping.omniauthable? %>
-  <% resource_class.omniauth_providers.each do |provider| %>
-    <%= form_for "Login",
-      url: omniauth_authorize_path(resource_name, provider), 
-      method: :post,
-      data: {turbo: "false"} do |f| %>
-        <%= button_tag(type: "submit", class: "google-sign-in") do %>
-  <%= image_tag("pic.png", alt: "", class: "google-sign-in-image") %>
-<% end %>
-
+<% google_oauth_ready = Devise.omniauth_configs[:google_oauth2].present? %>
+<% if devise_mapping.omniauthable? && google_oauth_ready %>
+  <%= form_with url: user_google_oauth2_omniauth_authorize_path, method: :post, data: { turbo: false }, local: true do %>
+    <%= button_tag(type: "submit", class: "google-sign-in") do %>
+      <%= image_tag("pic.png", alt: "", class: "google-sign-in-image") %>
     <% end %>
   <% end %>
   <p style="margin-top: 20px;">Google login is required to access the site.</p>
+<% elsif devise_mapping.omniauthable? %>
+  <p style="margin-top: 20px; color: #b73e3e;">
+    Google login is temporarily unavailable. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET and restart Rails.
+  </p>
 <% end %>

@@ -1,69 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Member Attendance</title>
-  <style>
-    /* Add CSS styles here */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    .header {
-      background-color: #500000;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      position: relative;
-    }
-    .container {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      position: relative;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    h3 {
-      margin-top: 0;
-    }
-    .back-button {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background-color: #FFFFFF;
-      color: black;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .back-button:hover {
-      background-color: gray;
-    }
-  </style>
-</head>
-<body>
+<%= link_to "Back to Home", root_path, class: "back-link" %>
 
-<div class="header">
-  <h2>Meetings and Events attended for <%= current_user.full_name %></h2>
-  <!-- Back Button -->
-  <button class="back-button" onclick="redirectToHome()">Back to Home</button>
-</div>
-<br>
-  
-  <div class="meetings-attended">
+<h1 class="attendance-page-title">Attendance for <%= current_user&.full_name || "Member" %></h1>
+
+<div class="attendance-layout">
+  <section class="meetings-attended">
     <h3>Meetings Attended</h3>
     <% if @member && @member.meetings.any? %>
       <table>
@@ -85,9 +25,9 @@
     <% else %>
       <p><%= @member ? "This member has not attended any meetings yet." : "Member is not in the system." %></p>
     <% end %>
-  </div>
+  </section>
 
-  <div class="events-attended">
+  <section class="events-attended">
     <h3>Events Attended</h3>
     <% if @member && @member.events.any? %>
       <table>
@@ -109,19 +49,10 @@
     <% else %>
       <p><%= @member ? "This member has not attended any events yet." : "Member is not in the system." %></p>
     <% end %>
-  </div>
+  </section>
 </div>
 
-<div class="total-points">
-  <h3>Total Points:</h3>
-  <p><%= @member ? @member.member_points : "Member is not in the system." %></p>
-</div>
-
-<script>
-function redirectToHome() {
-  window.location.href = '<%= root_path %>';
-}
-</script>
-
-</body>
-</html>
+<section class="member-points-card">
+  <h3>Total Points</h3>
+  <p class="member-points-value"><%= @member ? @member.member_points : 0 %></p>
+</section>

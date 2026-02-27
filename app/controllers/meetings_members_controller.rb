@@ -3,6 +3,7 @@ require 'axlsx'
 class MeetingsMembersController < ApplicationController
   before_action :set_meeting_member, only: %i[show edit update destroy]
   before_action :require_login
+  before_action :require_admin!, except: %i[index create]
 
   def require_login
     redirect_to login2_path unless session[:authenticated]
@@ -10,10 +11,19 @@ class MeetingsMembersController < ApplicationController
 
   # GET /meetings_members
   def index
-    # @meetings_members = MeetingsMember.includes(:meeting, :member).all
-    @meetings_members = MeetingsMember.includes(:meeting, :member).order('meetings.date DESC')
     @meetings = Meeting.all
-    @members = Member.all  # Add this line to set @members
+    if admin_view_mode?
+      @meetings_members = MeetingsMember.includes(:meeting, :member).order('meetings.date DESC')
+      @members = Member.all
+    else
+      @current_member = Member.find_by(member_name: current_user&.full_name)
+      @meetings_members = if @current_member.present?
+                            MeetingsMember.includes(:meeting, :member).where(member_id: @current_member.id)
+                          else
+                            MeetingsMember.none
+                          end
+      @members = @current_member.present? ? [@current_member] : []
+    end
   end
 
   # for exporting table data
@@ -63,7 +73,23 @@ class MeetingsMembersController < ApplicationController
 
   # POST /meetings_members
   def create
-    @meeting_member = MeetingsMember.new(meeting_member_params)
+    if admin_view_mode?
+      @meeting_member = MeetingsMember.new(meeting_member_params)
+    else
+      current_member = Member.find_by(member_name: current_user&.full_name)
+      unless current_member.present?
+        redirect_to meetings_members_path, alert: "No member profile found for your account. Ask an admin to create one first."
+        return
+      end
+
+      meeting_id = params.dig(:meetings_member, :meeting_id)
+      unless meeting_id.present?
+        redirect_to meetings_members_path, alert: "Select a meeting to check in."
+        return
+      end
+
+      @meeting_member = MeetingsMember.new(meeting_id:, member_id: current_member.id)
+    end
 
     # Check if the member is already in the meeting
     if MeetingsMember.exists?(meeting_id: @meeting_member.meeting_id, member_id: @meeting_member.member_id)

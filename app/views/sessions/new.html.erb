@@ -11,87 +11,8 @@
 
   <!-- Custom Styles -->
   <style>
-    body {
-      background-color: #fff;
-      color: #800000;
-    }
-
-    .navbar {
-      background-color: #600000 !important;
-    }
-
-    .navbar-brand, .nav-link {
-      color: #fff !important;
-    }
-
-    .btn-primary {
-      background-color: #800000 !important;
-      border-color: #800000 !important;
-    }
-
-    .btn-primary:hover {
-      background-color: #8B0000 !important;
-      border-color: #8B0000 !important;
-    }
-
-    .btn-success {
-      background-color: #fff !important;
-      border-color: #800000 !important;
-      color: #800000 !important;
-    }
-
-    .btn-success:hover {
-      background-color: #f8f9fa !important;
-      color: #800000 !important;
-    }
-
-    h1, h2 {
-      color: #800000;
-    }
-
-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 30px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      background-color: #fff;
-      border-radius: 8px;
-    }
-
-    th,
-    td {
-      padding: 12px 15px;
-      border: none;
-      text-align: left;
-    }
-
-    thead {
-      background-color: #eaeaea;
-    }
-
-    th {
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
-    tbody tr {
-      transition: background-color 0.3s ease;
-    }
-
-    tbody tr:nth-child(odd) {
-      background-color: #ffffff;
-    }
-
-    tbody tr:nth-child(even) {
-      background-color: #f4f4f4;
-    }
-
-    tbody tr:hover {
-      background-color: #dddfe2;
-    }
-
-    td {
-      vertical-align: middle;
+    .container.mt-4 {
+      max-width: 1080px;
     }
   </style>
 </head>
@@ -117,17 +38,30 @@ table {
             <%= link_to "Meetings", meetings_path, class: "nav-link" %>
           </li>
           <li class="nav-item">
-            <%= link_to "Members", members_path, class: "nav-link" %>
-          <li class="nav-item">
-            <%= link_to "Meeting Attendance", meetings_members_path, class: "nav-link" %>
+            <%= link_to(admin_view_mode? ? "Event Attendance" : "Event Check-In", events_members_path, class: "nav-link") %>
           </li>
           <li class="nav-item">
-            <%= link_to "Event Attendance", events_members_path, class: "nav-link" %>
+            <%= link_to(admin_view_mode? ? "Meeting Attendance" : "Meeting Check-In", meetings_members_path, class: "nav-link") %>
           </li>
+          <% if admin_view_mode? %>
+            <li class="nav-item">
+              <%= link_to "Members", members_path, class: "nav-link" %>
+            </li>
+          <% end %>
         </ul>
       </div>
       <div class="ml-auto">
         <% if current_user %>
+        <% if admin_user? %>
+          <div style="margin-bottom: 8px; text-align: right;">
+            <span style="color: #fff; margin-right: 8px;"><%= admin_view_mode? ? "Admin View" : "Member View" %></span>
+            <% if admin_view_mode? %>
+              <%= button_to "Switch to Member View", switch_view_mode_path("member"), method: :post, class: "btn btn-success", style: "display:inline-block;" %>
+            <% else %>
+              <%= button_to "Switch to Admin View", switch_view_mode_path("admin"), method: :post, class: "btn btn-success", style: "display:inline-block;" %>
+            <% end %>
+          </div>
+        <% end %>
         <div style="width: 75px; height: 75px; border-radius: 50%; overflow: hidden;">
           <%= link_to(check_member_attendance_path, onclick: "showEventsAndMeetings()") do %>
   <%= image_tag(current_user.avatar_url, style: "width: 100%; height: auto; border-radius: 50%; margin-bottom: 5px;") %>
@@ -211,7 +145,7 @@ table {
           <% @events.each do |event| %>
             <tr>
               <td><%= event.event_name %></td>
-              <td><%= link_to h(event.event_link), h(event.event_link) %></td>
+              <td><%= link_to h(event.event_link), external_url(event.event_link), target: "_blank", rel: "noopener" %></td>
              <td><%= event.event_end.strftime("%Y-%m-%d %I:%M %p") %></td>
              <td><%= event.event_datetime.strftime("%Y-%m-%d %I:%M %p") %></td>
              <td><%= event.event_points %></td>
@@ -236,7 +170,7 @@ table {
       <% @links.each do |link| %>
         <tr>
           <td><%= link.title %></td>
-          <td><%= link_to h(link.url), h(link.url) %></td>
+          <td><%= link_to h(link.url), external_url(link.url), target: "_blank", rel: "noopener" %></td>
         </tr>
       <% end %>
     </tbody>
@@ -272,3 +206,4 @@ table {
 </body>
 
 </html>
+

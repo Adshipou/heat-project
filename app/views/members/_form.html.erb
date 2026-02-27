@@ -21,10 +21,17 @@
       <%= form.number_field :member_points, class: 'form-control' %>
     </div>
 
-    <div class="form-field">
-      <%= form.label :executive_status, class: 'form-label' %>
-      <%= form.check_box :executive_status, class: 'form-control' %>
-    </div>
+    <% if super_admin_user? %>
+      <div class="form-field">
+        <%= form.label :executive_status, class: 'form-label' %>
+        <%= form.check_box :executive_status %>
+      </div>
+    <% else %>
+      <div class="form-field">
+        <label class="form-label">Executive status</label>
+        <p class="helper-text">Only the super admin can change this.</p>
+      </div>
+    <% end %>
 
     <div class="form-field">
       <%= form.submit 'Save Member', class: 'form-submit' %>
@@ -109,5 +116,11 @@
 
   .form-submit:hover {
     background-color: #0056b3;
+  }
+
+  .helper-text {
+    color: #666;
+    margin: 0;
+    font-size: 14px;
   }
 </style>

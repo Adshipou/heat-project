@@ -1,6 +1,7 @@
 class MeetingsController < ApplicationController
   before_action :set_meeting, only: %i[ show edit update destroy ]
   before_action :require_login
+  before_action :require_admin!, except: %i[index show member_view]
   
   # GET /meetings or /meetings.json
   def index

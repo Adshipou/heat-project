@@ -1,45 +1,10 @@
 <%= link_to 'Back', root_path %>
 
-<h1>Event Attendance</h1>
+<h1><%= admin_view_mode? ? "Event Attendance" : "Event Check-In" %></h1>
 
-<style>
-  /* Table Styles */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-  }
-  th, td {
-    padding: 8px;
-    border: 1px solid black;
-  }
-  th {
-    background-color: #f2f2f2;
-    text-align: left;
-  }
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  tr:hover {
-    background-color: #ddd;
-  }
-
-  /* Form Styles */
-  .form-group {
-    margin-bottom: 10px;
-  }
-  .btn-primary {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-  }
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-</style>
-
+<% if member_view_mode? && @current_member.blank? %>
+  <p style="color: #b00020;">No member profile is linked to your account yet. Ask an admin to create one with your full name.</p>
+<% end %>
 
 <table>
   <thead>
@@ -47,7 +12,7 @@
       <th>Date</th>
       <th>Event</th>
       <th>Members</th>
-      <th>Add Member</th>
+      <th><%= admin_view_mode? ? "Add Member" : "Check In" %></th>
     </tr>
   </thead>
   <tbody>
@@ -68,13 +33,40 @@
           <% end %>
         </td>
         <td>
-          <%= form_with(model: EventsMember.new, url: events_members_path, method: :post) do |form| %>
-            <%= form.hidden_field :event_id, value: event.id %>
-            <div class="form-group">
-              <%= form.label :member_id, "Member" %>
-              <%= form.collection_select :member_id, Member.all, :id, :member_name, prompt: "Select Member" %>
+          <% if admin_view_mode? %>
+            <%= form_with(model: EventsMember.new, url: events_members_path, method: :post) do |form| %>
+              <%= form.hidden_field :event_id, value: event.id %>
+              <div class="form-group">
+                <%= form.label :member_id, "Member" %>
+                <%= form.collection_select :member_id, @members, :id, :member_name, prompt: "Select Member" %>
+              </div>
+              <%= form.submit "Add Member", class: "btn btn-primary" %>
+            <% end %>
+            <div class="check-in-code-card"
+                 data-checkin-code-card="true"
+                 data-event-id="<%= event.id %>"
+                 data-expires-in-seconds="<%= event.check_in_expires_in_seconds %>">
+              <p class="check-in-code-title">Current Check-In Code</p>
+              <p class="check-in-code-value" id="check-in-code-<%= event.id %>"><%= event.current_check_in_code %></p>
+              <p class="check-in-code-expiry" id="check-in-expiry-<%= event.id %>"></p>
             </div>
-            <%= form.submit "Add Member", class: "btn btn-primary" %>
+          <% elsif @current_member.present? %>
+            <% already_checked_in = event.events_members.exists?(member_id: @current_member.id) %>
+            <% if already_checked_in %>
+              <span class="check-in-done">Checked in</span>
+            <% else %>
+              <%= form_with(model: EventsMember.new, url: events_members_path, method: :post) do |form| %>
+                <%= form.hidden_field :event_id, value: event.id %>
+                <div class="form-group">
+                  <%= form.label :check_in_code, "Check-In Code" %>
+                  <%= form.text_field :check_in_code, maxlength: 6, pattern: "\\d{6}", inputmode: "numeric", autocomplete: "one-time-code", placeholder: "6-digit code", required: true %>
+                </div>
+                <%= form.submit "Check In", class: "btn btn-primary" %>
+                <p class="check-in-help">Code rotates every 10 minutes.</p>
+              <% end %>
+            <% end %>
+          <% else %>
+            Unavailable
           <% end %>
         </td>
       </tr>
@@ -83,18 +75,86 @@
 </table>
 
 <div>
-  <%= link_to "Back to Members", members_path %><br><br>
+  <% if admin_view_mode? %>
+    <%= link_to "Back to Members", members_path %><br><br>
+  <% end %>
   <%= link_to "Back to Events", events_path %>
 </div>
 
-<div><br><br>
-  <%= link_to 'Export to Excel', events_export_path, class: 'btn btn-primary' %>
-</div>
+<% if admin_view_mode? %>
+  <div><br><br>
+    <%= link_to 'Export to Excel', events_export_path, class: 'btn btn-primary' %>
+  </div>
 
+  <h2>Remove Member from Event</h2>
+  <%= form_with(url: remove_member_from_event_events_members_path, method: :delete) do |form| %>
+    <%= form.collection_select :event_id, @events, :id, :event_name, prompt: "Select Event" %>
+    <%= form.collection_select :member_id, @members, :id, :member_name, prompt: "Select Member" %>
+    <%= form.submit "Remove Member", class: "btn btn-danger" %>
+  <% end %>
+<% end %>
 
-<h2>Remove Member from Event</h2>
-<%= form_with(url: remove_member_from_event_events_members_path, method: :delete) do |form| %>
-  <%= form.collection_select :event_id, @events, :id, :event_name, prompt: "Select Event" %>
-  <%= form.collection_select :member_id, @members, :id, :member_name, prompt: "Select Member" %>
-  <%= form.submit "Remove Member", class: "btn btn-danger" %>
+<% if admin_view_mode? %>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const codeCards = Array.from(document.querySelectorAll("[data-checkin-code-card='true']"));
+      if (codeCards.length === 0) return;
+
+      const formatRemaining = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, "0")}`;
+      };
+
+      const updateCountdownText = (card, seconds) => {
+        const eventId = card.dataset.eventId;
+        const expiryEl = document.getElementById(`check-in-expiry-${eventId}`);
+        if (!expiryEl) return;
+        expiryEl.textContent = `Rotates in ${formatRemaining(Math.max(seconds, 0))}`;
+      };
+
+      const refreshCode = async (card) => {
+        if (card.dataset.loading === "true") return;
+        card.dataset.loading = "true";
+        const eventId = card.dataset.eventId;
+
+        try {
+          const response = await fetch(`/events_members/check_in_code?event_id=${encodeURIComponent(eventId)}`, {
+            headers: { "Accept": "application/json" }
+          });
+          if (!response.ok) throw new Error("Failed to refresh code.");
+
+          const payload = await response.json();
+          const codeEl = document.getElementById(`check-in-code-${eventId}`);
+          if (codeEl) codeEl.textContent = payload.code;
+          card.dataset.expiresInSeconds = String(payload.expires_in);
+          updateCountdownText(card, Number(payload.expires_in));
+        } catch (_error) {
+          const expiryEl = document.getElementById(`check-in-expiry-${eventId}`);
+          if (expiryEl) expiryEl.textContent = "Unable to refresh code. Reload page.";
+          card.dataset.expiresInSeconds = "5";
+        } finally {
+          card.dataset.loading = "false";
+        }
+      };
+
+      codeCards.forEach((card) => {
+        const initialSeconds = Number(card.dataset.expiresInSeconds || "0");
+        updateCountdownText(card, initialSeconds);
+      });
+
+      setInterval(() => {
+        codeCards.forEach((card) => {
+          const seconds = Number(card.dataset.expiresInSeconds || "0");
+          if (seconds <= 1) {
+            refreshCode(card);
+            return;
+          }
+
+          card.dataset.expiresInSeconds = String(seconds - 1);
+          updateCountdownText(card, seconds - 1);
+        });
+      }, 1000);
+    });
+  </script>
 <% end %>
